@@ -1,0 +1,150 @@
+inputs:
+  - /Event/Charm/Phys/OmegaCstarForPromptCharm/Particles
+descriptorTemplate: >-
+  ${Omega_cst0}[Omega_c*0 -> ${Lambda_cplus}(Lambda_c+ -> ${pplus}p+ ${Kminus}K-
+  ${piplus}pi+) ${Kminus_0}K-]CC
+tools:
+  - TupleToolKinematic:
+      ExtraName: ''
+      Verbose: false
+      MaxPV: 100
+      Transporter: ParticleTransporter:PUBLIC
+  - TupleToolPid:
+      ExtraName: ''
+      Verbose: false
+      MaxPV: 100
+  - TupleToolANNPID:
+      ExtraName: ''
+      Verbose: false
+      MaxPV: 100
+      ANNPIDTunes:
+        - MC12TuneV2
+        - MC12TuneV3
+        - MC12TuneV4
+        - MC15TuneV1
+      PIDTypes:
+        - Electron
+        - Muon
+        - Pion
+        - Kaon
+        - Proton
+        - Ghost
+  - TupleToolGeometry:
+      ExtraName: ''
+      Verbose: false
+      MaxPV: 100
+      RefitPVs: false
+      PVReFitter: LoKi::PVReFitter:PUBLIC
+      FillMultiPV: false
+  - TupleToolEventInfo:
+      ExtraName: ''
+      Verbose: false
+      MaxPV: 100
+  - LoKi__Hybrid__TupleTool:
+      Factory: LoKi::Hybrid::Tool/HybridFactory:PUBLIC
+      Variables:
+        ETA: ETA
+        PHI: PHI
+      BoolVariables: {}
+      FloatVariables: {}
+      IntVariables: {}
+  - TupleToolTrackInfo:
+      ExtraName: ''
+      Verbose: false
+      MaxPV: 100
+      StoredMeasurements: []
+      ExtrapolatorName: TrackMasterExtrapolator:PUBLIC
+  - TupleToolPrimaries:
+      ExtraName: ''
+      Verbose: false
+      MaxPV: 100
+      InputLocation: Rec/Vertex/Primary
+  - TupleToolRecoStats:
+      ExtraName: ''
+      Verbose: false
+      MaxPV: 100
+branches:
+  Omega_cst0:
+    particle: Omega_c*0
+    tools:
+      - TupleToolDecayTreeFitter/PrimaryVertexFit:
+          ExtraName: ''
+          Verbose: true
+          MaxPV: 100
+          daughtersToConstrain: []
+          constrainToOriginVertex: true
+          Substitutions: {}
+          StoreRefittedPVsTwice: false
+          UpdateDaughters: true
+          UseTrackTrajectory: true
+          VetoPIDs: []
+          UseFullTreeInName: false
+      - TupleToolDecayTreeFitter/PrimaryVertexMassFit:
+          ExtraName: ''
+          Verbose: true
+          MaxPV: 100
+          daughtersToConstrain:
+            - Lambda_c+
+          constrainToOriginVertex: true
+          Substitutions: {}
+          StoreRefittedPVsTwice: false
+          UpdateDaughters: true
+          UseTrackTrajectory: true
+          VetoPIDs: []
+          UseFullTreeInName: false
+      - TupleToolTISTOS/TISTOSTool:
+          ExtraName: ''
+          Verbose: true
+          MaxPV: 100
+          VerboseL0: true
+          VerboseHlt1: true
+          VerboseHlt2: true
+          VerboseStripping: false
+          FillL0: true
+          FillHlt1: true
+          FillHlt2: true
+          FillStripping: false
+          TriggerList:
+            - L0HadronDecision
+            - L0GlobalDecision
+            - Hlt1MBNoBiasDecision
+            - Hlt1L0AnyDecision
+            - Hlt1TrackAllL0Decision
+            - Hlt2B2HHDecision
+            - L0CALODecision
+            - Hlt1TrackMVADecision
+            - Hlt1TwoTrackMVADecision
+            - Hlt2Topo2BodyDecision
+            - Hlt2Topo3BodyDecision
+            - Hlt2Topo4BodyDecision
+            - Hlt2GlobalDecision
+          Hlt1TriggerTisTosName: Hlt1TriggerTisTos
+          Hlt2TriggerTisTosName: Hlt2TriggerTisTos
+          L0TriggerTisTosName: L0TriggerTisTos
+          PIDList: []
+          TopParticleOnly: false
+          Hlt1Phys: >-
+            Hlt1(?!ODIN)(?!L0)(?!Lumi)(?!Tell1)(?!MB)(?!NZS)(?!Velo)(?!BeamGas)(?!Incident).*Decision
+          Hlt2Phys: >-
+            Hlt2(?!Forward)(?!DebugEvent)(?!Express)(?!Lumi)(?!Transparent)(?!PassThrough).*Decision
+          TIS: true
+          TOS: true
+          TUS: false
+          TPS: false
+  Lambda_cplus:
+    particle: Lambda_c+
+    tools: []
+  pplus:
+    particle: p+
+    tools: []
+  Kminus:
+    particle: K-
+    tools: []
+  piplus:
+    particle: pi+
+    tools: []
+  Kminus_0:
+    particle: K-
+    tools: []
+groups: {}
+name: DecayTreeTuple/DecayTree
